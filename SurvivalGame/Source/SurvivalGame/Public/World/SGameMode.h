@@ -6,6 +6,8 @@
 #include "SMutator.h"
 #include "SGameMode.generated.h"
 
+class ASPlayerState;
+
 /**
  * 
  */
@@ -50,7 +52,7 @@ protected:
 	float BotSpawnInterval;
 
 	/* Called once on every new player that enters the gamemode */
-	virtual FString InitNewPlayer(class APlayerController* NewPlayerController, const TSharedPtr<const FUniqueNetId>& UniqueId, const FString& Options, const FString& Portal = TEXT(""));
+	virtual FString InitNewPlayer(class APlayerController* NewPlayerController, const FUniqueNetIdRepl& UniqueId, const FString& Options, const FString& Portal = TEXT("")) override;
 
 	/* The teamnumber assigned to Players */
 	int32 PlayerTeamNum;
@@ -153,8 +155,4 @@ protected:
 
 	/* Note: Functions flagged with BlueprintNativeEvent like above require _Implementation for a C++ implementation */
 	virtual bool CheckRelevance_Implementation(AActor* Other);
-
-	/* Hacked into ReceiveBeginPlay() so we can do mutator replacement of Actors and such */
-	void BeginPlayMutatorHack(FFrame& Stack, RESULT_DECL);
-
 };

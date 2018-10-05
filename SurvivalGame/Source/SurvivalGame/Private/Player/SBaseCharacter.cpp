@@ -3,6 +3,8 @@
 #include "SurvivalGame.h"
 #include "SBaseCharacter.h"
 #include "SGameMode.h"
+#include "SCharacterMovementComponent.h"
+#include "SDamageType.h"
 
 
 ASBaseCharacter::ASBaseCharacter(const class FObjectInitializer& ObjectInitializer)
@@ -97,8 +99,7 @@ bool ASBaseCharacter::CanDie(float KillingDamage, FDamageEvent const& DamageEven
 	if (bIsDying ||
 		IsPendingKill() ||
 		Role != ROLE_Authority ||
-		GetWorld()->GetAuthGameMode() == NULL ||
-		GetWorld()->GetAuthGameMode()->GetMatchState() == MatchState::LeavingMap)
+		GetWorld()->GetAuthGameMode() == NULL)
 	{
 		return false;
 	}
@@ -143,7 +144,7 @@ void ASBaseCharacter::OnDeath(float KillingDamage, FDamageEvent const& DamageEve
 	}
 
 	bReplicateMovement = false;
-	bTearOff = true;
+	TearOff();
 	bIsDying = true;
 
 	PlayHit(KillingDamage, DamageEvent, PawnInstigator, DamageCauser, true);
